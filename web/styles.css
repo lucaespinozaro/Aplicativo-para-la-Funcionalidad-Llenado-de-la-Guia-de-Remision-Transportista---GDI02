@@ -1,0 +1,303 @@
+/* styles.css — versión sobria y sencilla */
+
+/* Reset y estilos base */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background-color: #f3f4f6; /* fondo claro neutro */
+  color: #2b2b2b;
+  line-height: 1.5;
+  font-size: 16px;
+}
+
+/* Header */
+header {
+  background-color: #3b5a99; /* azul sobrio */
+  color: #ffffff;
+  padding: 1rem 1.5rem;
+}
+
+header h1 {
+  font-size: 1.4rem;
+  margin-bottom: 0.6rem;
+  font-weight: 600;
+}
+
+nav {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+nav button {
+  background: rgba(255,255,255,0.12);
+  color: #ffffff;
+  border: 1px solid rgba(255,255,255,0.18);
+  padding: 0.5rem 0.9rem;
+  border-radius: 0px;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+/* Main content */
+main {
+  max-width: 1100px;
+  margin: 1.5rem auto;
+  padding: 0 1rem;
+}
+
+.content-section {
+  display: none;
+  background: #ffffff;
+  padding: 1.6rem;
+  border-radius: 8px;
+  border: 1px solid #e6e7ea;
+}
+
+.content-section.active {
+  display: block;
+}
+
+h2 {
+  color: #3b5a99;
+  margin-bottom: 1rem;
+  font-size: 1.3rem;
+  border-bottom: 2px solid #e6e7ea;
+  padding-bottom: 0.4rem;
+}
+
+h3 {
+  color: #333333;
+  margin-bottom: 0.8rem;
+  font-size: 1.05rem;
+}
+
+/* Formularios */
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.3rem;
+  font-weight: 600;
+  color: #333;
+  font-size: 0.95rem;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 0.6rem;
+  border: 1px solid #d6d8db;
+  border-radius: 0px;
+  font-size: 0.95rem;
+  background: #fff;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: #8ea0d6;
+  box-shadow: none;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 0.8rem;
+  margin-bottom: 1rem;
+}
+
+.form-actions {
+  display: flex;
+  gap: 0.8rem;
+  margin-top: 1rem;
+}
+
+/* Botones (sobrios) */
+button, .btn-primary, .btn-secondary, .btn-success {
+  padding: 0.6rem 1.1rem;
+  border: none;
+  border-radius: 1px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.btn-primary {
+  background: #3b5a99;
+  color: #fff;
+}
+
+.btn-secondary {
+  background: #6c757d;
+  color: #fff;
+}
+
+.btn-success {
+  background: #2d8a46;
+  color: #fff;
+}
+
+button:disabled {
+  background: #cfcfcf;
+  cursor: not-allowed;
+}
+
+/* Result boxes */
+.result-box {
+  margin-top: 1rem;
+  padding: 0.9rem;
+  border-radius: 6px;
+  border-left: 4px solid;
+  font-size: 0.95rem;
+}
+
+.result-box.success {
+  background: #eef7ec;
+  border-color: #2d8a46;
+  color: #1b4f2a;
+}
+
+.result-box.error {
+  background: #fff3f2;
+  border-color: #b02a37;
+  color: #5f2124;
+}
+
+/* Tablas */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 0.8rem;
+  font-size: 0.95rem;
+}
+
+table th {
+  background: #3b5a99;
+  color: white;
+  padding: 0.6rem;
+  text-align: left;
+  font-weight: 600;
+}
+
+table td {
+  padding: 0.6rem;
+  border-bottom: 1px solid #eceef0;
+}
+
+/* Filtros */
+.filter-panel {
+  display: flex;
+  gap: 0.6rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+.filter-panel input {
+  padding: 0.5rem;
+  border: 1px solid #d6d8db;
+  border-radius: 6px;
+  min-width: 140px;
+}
+
+/* Wizard */
+.wizard-step {
+  /* sin animaciones */
+}
+
+/* Checkboxes */
+.checkbox-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  padding: 0.8rem;
+  background: #fafafa;
+  border-radius: 6px;
+  border: 1px solid #eceef0;
+}
+
+.checkbox-group label {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.checkbox-group input[type="checkbox"] {
+  width: auto;
+  margin-right: 0.5rem;
+}
+
+/* Lista seleccionable */
+.selectable-list {
+  max-height: 360px;
+  overflow-y: auto;
+  border: 1px solid #e6e7ea;
+  border-radius: 6px;
+  padding: 0.8rem;
+  background: #fff;
+}
+
+.selectable-item {
+  padding: 0.6rem;
+  border: 1px solid #f0f1f3;
+  border-radius: 6px;
+  margin-bottom: 0.5rem;
+  cursor: pointer;
+}
+
+.selectable-item.selected {
+  background: #eef4ff;
+  border-color: #c6d6f9;
+}
+
+/* Footer */
+footer {
+  text-align: center;
+  padding: 1.5rem;
+  color: #6c757d;
+  margin-top: 2rem;
+  font-size: 0.95rem;
+}
+
+/* Loading (simple) */
+.loading {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid #d6d8db;
+  border-radius: 50%;
+  border-top-color: #3b5a99;
+  /* sin animación para mantenerlo simple: se puede animar si quieres */
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  header h1 {
+    font-size: 1.2rem;
+  }
+
+  nav {
+    flex-direction: column;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .form-actions {
+    flex-direction: column;
+  }
+
+  .filter-panel {
+    flex-direction: column;
+  }
+}

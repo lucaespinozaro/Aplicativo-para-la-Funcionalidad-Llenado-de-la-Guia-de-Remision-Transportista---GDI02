@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema Guía Transportista</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <header>
+      <h1>Sistema de Gestión - Guías de Transporte</h1>
+      <nav>
+        <button onclick="showSection('gr-form')">Nueva Guía Remitente</button>
+        <button onclick="showSection('gr-list')">Listar Guías</button>
+        <button onclick="showSection('gt-wizard')">Crear Guía Transportista</button>
+        <button onclick="showSection('reports')">Reportes</button>
+
+        <!-- Módulos nuevos -->
+        <span class="nav-spacer"></span>
+        <button onclick="showSection('empresas')">Empresas</button>
+        <button onclick="showSection('conductores')">Conductores</button>
+        <button onclick="showSection('vehiculos')">Vehículos</button>
+        <button onclick="showSection('productos')">Productos</button>
+      </nav>
+    </header>
+
+    <main id="app-content">
+      <!-- Sección: Formulario GR -->
+      <section id="gr-form" class="content-section active">
+        <h2>Nueva Guía Remitente (Borrador)</h2>
+        <form id="form-gr-draft">
+          <div class="form-group">
+            <label>Número de Guía *</label>
+            <input type="text" name="numero_guia_remitente" required maxlength="20" placeholder="Ej: GR-0001">
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label>RUC Transportista * (11 dígitos)</label>
+              <input type="text" name="ruc_transportista" required pattern="[0-9]{11}" maxlength="11" placeholder="20123456789">
+            </div>
+            <div class="form-group">
+              <label>RUC Remitente * (11 dígitos)</label>
+              <input type="text" name="ruc_remitente" required pattern="[0-9]{11}" maxlength="11" placeholder="20123456780">
+            </div>
+            <div class="form-group">
+              <label>RUC Destinatario * (11 dígitos)</label>
+              <input type="text" name="ruc_destinatario" required pattern="[0-9]{11}" maxlength="11" placeholder="20123456770">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>DNI Conductor * (8 dígitos)</label>
+              <input type="text" name="dni_conductor" required pattern="[0-9]{8}" maxlength="8" placeholder="87654321">
+            </div>
+            <div class="form-group">
+              <label>Placa Tracto * (6 caracteres)</label>
+              <input type="text" name="placa_tracto" required maxlength="6" placeholder="ABC123">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>Fecha Emisión *</label>
+              <input type="date" name="fecha_emision" required placeholder="AAAA-MM-DD">
+            </div>
+            <div class="form-group">
+              <label>Hora Emisión *</label>
+              <input type="time" name="hora_emision" required placeholder="09:00">
+            </div>
+            <div class="form-group">
+              <label>Fecha Entrega Bienes *</label>
+              <input type="date" name="fecha_entrega_bienes" required placeholder="AAAA-MM-DD">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>Modalidad Traslado *</label>
+              <select name="modalidad_traslado" required>
+                <option value="">Seleccionar...</option>
+                <option value="PUBLICO">Público</option>
+                <option value="PRIVADO">Privado</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Peso Total Traslado (KG) *</label>
+              <input type="number" name="peso_total_traslado" required min="0" step="0.001" placeholder="1000.000">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>Código Local Partida *</label>
+              <input type="text" name="cod_local_partida" required maxlength="10" placeholder="L001">
+            </div>
+            <div class="form-group">
+              <label>Código Local Llegada *</label>
+              <input type="text" name="cod_local_llegada" required maxlength="10" placeholder="L002">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Motivo Traslado</label>
+            <input type="text" name="motivo_traslado" maxlength="200" placeholder="Venta / Traslado interno">
+          </div>
+
+          <div class="form-group">
+            <label>Observaciones</label>
+            <textarea name="observaciones" maxlength="500" rows="3" placeholder="Notas opcionales"></textarea>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="btn-primary">Guardar Borrador</button>
+            <button type="reset" class="btn-secondary">Limpiar</button>
+          </div>
+        </form>
+
+        <div id="gr-draft-result" class="result-box" style="display:none;"></div>
+
+        <!-- Agregar detalles después de guardar borrador -->
+        <div id="detalle-section" style="display:none;">
+          <h3>Agregar Detalles (Productos)</h3>
+          <form id="form-detalle">
+            <input type="hidden" name="numero_guia_remitente" id="detalle-numero-guia">
+            <div class="form-row">
+              <div class="form-group">
+                <label>Número Ítem *</label>
+                <input type="number" name="numero_item" required min="1" placeholder="1">
+              </div>
+              <div class="form-group">
+                <label>Código Producto *</label>
+                <input type="text" name="codigo_producto" required maxlength="20" placeholder="P001 (código del producto)">
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>Peso Tara (KG)</label>
+                <input type="number" name="peso_tara" value="0" min="0" step="0.001" placeholder="0.000">
+              </div>
+              <div class="form-group">
+                <label>Peso Neto (KG)</label>
+                <input type="number" name="peso_neto" value="0" min="0" step="0.001" placeholder="auto desde producto">
+              </div>
+              <div class="form-group">
+                <label>Peso Bruto (KG) *</label>
+                <input type="number" name="peso_bruto" required min="0" step="0.001" placeholder="calculado automáticamente">
+              </div>
+            </div>
+            <button type="submit" class="btn-primary">Agregar Detalle</button>
+          </form>
+
+          <div id="detalles-list"></div>
+
+          <button onclick="finalizeGR()" class="btn-success">Finalizar Guía Remitente</button>
+        </div>
+      </section>
+
+      <!-- Sección: Lista GR -->
+      <section id="gr-list" class="content-section">
+        <h2>Listado de Guías Remitente</h2>
+        <div class="filter-panel">
+          <input type="date" id="filter-fecha-desde" placeholder="Desde">
+          <input type="date" id="filter-fecha-hasta" placeholder="Hasta">
+          <input type="text" id="filter-ruc" placeholder="RUC Transportista" maxlength="11">
+          <button onclick="loadGRList()" class="btn-primary">Buscar</button>
+        </div>
+        <div id="gr-list-content"></div>
+      </section>
+
+      <!-- Sección: Wizard GT -->
+      <section id="gt-wizard" class="content-section">
+        <h2>Crear Guía Transportista desde Remitentes</h2>
+        
+        <div class="wizard-step" id="wizard-step-1">
+          <h3>Paso 1: Seleccionar Guías Remitente</h3>
+          <p>Seleccione las guías remitente que desea consolidar:</p>
+          <div id="available-gr-list"></div>
+          <button onclick="loadAvailableGR()" class="btn-secondary">Cargar Guías Disponibles</button>
+          <button onclick="wizardNext(2)" class="btn-primary">Siguiente</button>
+        </div>
+
+        <div class="wizard-step" style="display:none;" id="wizard-step-2">
+          <h3>Paso 2: Datos de Transporte</h3>
+          <form id="form-gt">
+            <div class="form-group">
+              <label>Número Guía Transportista *</label>
+              <input type="text" name="numero_guia_transportista" required maxlength="20" placeholder="GT-0001">
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>RUC Transportista * (11 dígitos)</label>
+                <input type="text" name="ruc_transportista" required pattern="[0-9]{11}" maxlength="11" placeholder="20123456789">
+              </div>
+              <div class="form-group">
+                <label>Fecha Inicio Traslado *</label>
+                <input type="date" name="fecha_inicio_traslado" required placeholder="AAAA-MM-DD">
+              </div>
+              <div class="form-group">
+                <label>Unidad Medida *</label>
+                <select name="unidad_medida" required>
+                  <option value="KGM">KGM</option>
+                  <option value="TNE">TNE</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Número Registro MTC</label>
+              <input type="text" name="numero_registro_mtc" maxlength="20" placeholder="Opcional">
+            </div>
+
+            <h4>Indicadores</h4>
+            <div class="checkbox-group">
+              <label><input type="checkbox" name="indicador_transporte_subcontratado" value="1"> Transporte Subcontratado</label>
+              <label><input type="checkbox" name="indicador_pagador_flete" value="1"> Indicador Pagador Flete</label>
+              <label><input type="checkbox" name="indicador_transbordo_programado" value="1"> Transbordo Programado</label>
+              <label><input type="checkbox" name="indicador_retorno_vehiculo_vacio" value="1"> Retorno Vehículo Vacío</label>
+              <label><input type="checkbox" name="indicador_retorno_envases_vacios" value="1"> Retorno Envases Vacíos</label>
+            </div>
+
+            <div id="subcontrato-fields" style="display:none;">
+              <div class="form-row">
+                <div class="form-group">
+                  <label>RUC Subcontratado (11 dígitos)</label>
+                  <input type="text" name="ruc_subcontratado" pattern="[0-9]{11}" maxlength="11" placeholder="Opcional">
+                </div>
+                <div class="form-group">
+                  <label>RUC Pagador Flete (11 dígitos)</label>
+                  <input type="text" name="ruc_pagador_flete" pattern="[0-9]{11}" maxlength="11" placeholder="Opcional">
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Observaciones</label>
+              <textarea name="observaciones" maxlength="500" rows="3" placeholder="Notas opcionales"></textarea>
+            </div>
+
+            <div class="form-actions">
+              <button type="button" onclick="wizardNext(1)" class="btn-secondary">Anterior</button>
+              <button type="button" onclick="wizardNext(3)" class="btn-primary">Siguiente</button>
+            </div>
+          </form>
+        </div>
+
+        <div class="wizard-step" style="display:none;" id="wizard-step-3">
+          <h3>Paso 3: Confirmación</h3>
+          <div id="gt-summary"></div>
+          <div class="form-actions">
+            <button onclick="wizardNext(2)" class="btn-secondary">Anterior</button>
+            <button onclick="createGT()" class="btn-success">Crear Guía Transportista</button>
+          </div>
+        </div>
+
+        <div id="gt-result" class="result-box" style="display:none;"></div>
+      </section>
+
+      <!-- Sección: Reportes -->
+      <section id="reports" class="content-section">
+        <h2>Reportes</h2>
+        <div class="report-selector">
+          <select id="report-select" onchange="showReportParams()">
+            <option value="">Seleccionar reporte...</option>
+            <option value="1">1. GT por Rango de Fechas</option>
+            <option value="2">2. GT por Número</option>
+            <option value="3">3. GR por Rango y Transportista</option>
+            <option value="4">4. GT por Horario</option>
+            <option value="5">5. Transporte Subcontratado</option>
+            <option value="6">6. Detalle de GR</option>
+            <option value="7">7. Conductores - Frecuencia</option>
+            <option value="8">8. Trazabilidad Completa</option>
+            <option value="9">9. Productos Más Transportados</option>
+            <option value="10">10. Resumen por Empresa</option>
+          </select>
+        </div>
+
+        <div id="report-params" style="display:none;">
+          <h3>Parámetros del Reporte</h3>
+          <form id="form-report">
+            <div id="params-container"></div>
+            <button type="submit" class="btn-primary">Ejecutar Reporte</button>
+          </form>
+        </div>
+
+        <div id="report-results"></div>
+      </section>
+
+      <!-- ===================== EMPRESAS ===================== -->
+      <section id="empresas" class="content-section">
+        <h2>Empresas</h2>
+
+        <div class="toolbar">
+          <button onclick="showEmpresaForm()" class="btn-primary">Nueva Empresa</button>
+          <input id="empresa-search" type="text" placeholder="Buscar por RUC o razón social" oninput="debounce(searchEmpresas, 300)">
+          <button id="empresa-search-btn" class="btn-secondary" onclick="searchEmpresas()">Buscar</button>
+        </div>
+
+        <!-- Mensaje para Empresas (no tocar empresa-list) -->
+        <div id="empresa-msg" class="result-box" style="display:none;"></div>
+
+
+        <div id="empresa-list"></div>
+
+        <div id="empresa-form-container" style="display:none;">
+          <h3 id="empresa-form-title">Crear Empresa</h3>
+          <form id="form-empresa">
+            <div class="form-row">
+              <div class="form-group">
+                <label>RUC *</label>
+                <input type="text" name="ruc" required maxlength="11" pattern="[0-9]{11}" placeholder="20123456789">
+              </div>
+              <div class="form-group">
+                <label>Razón Social *</label>
+                <input type="text" name="razon_social" required maxlength="150" placeholder="Mi Empresa S.A.">
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group"><label>Provincia</label><input name="provincia" placeholder="Provincia"></div>
+              <div class="form-group"><label>Departamento</label><input name="departamento" placeholder="Departamento"></div>
+              <div class="form-group"><label>Distrito</label><input name="distrito" placeholder="Distrito"></div>
+            </div>
+            <div class="form-group"><label>Domicilio</label><input name="domicilio" maxlength="200" placeholder="Av. Principal 123"></div>
+
+            <div class="form-actions">
+              <button type="submit" class="btn-primary">Guardar</button>
+              <button type="button" onclick="hideEmpresaForm()" class="btn-secondary">Cancelar</button>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <!-- ===================== CONDUCTORES ===================== -->
+      <section id="conductores" class="content-section">
+        <h2>Conductores</h2>
+        <div class="toolbar">
+          <button onclick="showConductorForm()" class="btn-primary">Nuevo Conductor</button>
+          <input id="conductor-search" type="text" placeholder="Buscar por DNI o nombre" oninput="debounce(searchConductores, 300)">
+          <button id="conductor-search-btn" class="btn-secondary" onclick="searchConductores()">Buscar</button>
+        </div>
+        <div id="conductor-msg" class="result-box" style="display:none;"></div>
+        
+        <div id="conductor-list"></div>
+
+        <div id="conductor-form-container" style="display:none;">
+          <h3 id="conductor-form-title">Crear Conductor</h3>
+          <form id="form-conductor">
+            <div class="form-row">
+              <div class="form-group"><label>DNI *</label><input name="dni_conductor" required maxlength="8" pattern="[0-9]{8}" placeholder="87654321"></div>
+              <div class="form-group"><label>Nombre *</label><input name="nombre_conductor" required maxlength="150" placeholder="José Pérez"></div>
+            </div>
+            <div class="form-group"><label>Número Licencia</label><input name="numero_licencia_conductor" maxlength="9" placeholder="A1234567"></div>
+            <div class="form-actions">
+              <button type="submit" class="btn-primary">Guardar</button>
+              <button type="button" onclick="hideConductorForm()" class="btn-secondary">Cancelar</button>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <!-- ===================== VEHÍCULOS (TRACTO + SEMIRREMOLQUE) ===================== -->
+      <section id="vehiculos" class="content-section">
+        <h2>Vehículos</h2>
+        <div class="toolbar">
+          <button onclick="showTractoForm()" class="btn-primary">Nuevo Tracto</button>
+          <button onclick="showSemirremolqueForm()" class="btn-primary">Nuevo Semirremolque</button>
+          <input id="vehiculo-search" type="text" placeholder="Buscar por placa" oninput="debounce(searchVehiculos, 300)">
+          <button id="vehiculo-search-btn" class="btn-secondary" onclick="searchVehiculos()">Buscar</button>
+        </div>
+
+        <div id="vehiculo-msg" class="result-box" style="display:none;"></div>
+
+
+        <div id="vehiculo-list"></div>
+
+        <!-- form tracto -->
+        <div id="tracto-form-container" style="display:none;">
+          <h3 id="tracto-form-title">Crear Tracto</h3>
+          <form id="form-tracto">
+            <div class="form-row">
+              <div class="form-group"><label>Placa *</label><input name="placa_tracto" required maxlength="6" placeholder="ABC123"></div>
+              <div class="form-group"><label>Marca</label><input name="marca_unidad" maxlength="50" placeholder="Marca"></div>
+              <div class="form-group"><label>Certificado</label><input name="certificado_inscripcion" maxlength="12" placeholder="12345678"></div>
+            </div>
+            <div class="form-actions">
+              <button class="btn-primary" type="submit">Guardar</button>
+              <button type="button" onclick="hideTractoForm()" class="btn-secondary">Cancelar</button>
+            </div>
+          </form>
+        </div>
+
+        <!-- form semirremolque -->
+        <div id="semirremolque-form-container" style="display:none;">
+          <h3 id="semir-form-title">Crear Semirremolque</h3>
+          <form id="form-semirremolque">
+            <div class="form-row">
+              <div class="form-group"><label>Placa *</label><input name="placa_semirremolque" required maxlength="6" placeholder="XYZ987"></div>
+              <div class="form-group"><label>Certificado</label><input name="certificado_inscripcion_semiremolque" maxlength="12" placeholder="12345678"></div>
+            </div>
+            <div class="form-actions">
+              <button class="btn-primary" type="submit">Guardar</button>
+              <button type="button" onclick="hideSemirremolqueForm()" class="btn-secondary">Cancelar</button>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <!-- ===================== PRODUCTOS ===================== -->
+      <section id="productos" class="content-section">
+        <h2>Productos</h2>
+        <div class="toolbar">
+          <button onclick="showProductoForm()" class="btn-primary">Nuevo Producto</button>
+          <input id="producto-search" type="text" placeholder="Buscar por código o descripción" oninput="debounce(searchProductos, 300)">
+          <button id="producto-search-btn" class="btn-secondary" onclick="searchProductos()">Buscar</button>
+        </div>
+
+        <div id="producto-msg" class="result-box" style="display:none;"></div>
+
+
+        <div id="producto-list"></div>
+
+        <div id="producto-form-container" style="display:none;">
+          <h3 id="producto-form-title">Crear Producto</h3>
+          <form id="form-producto">
+            <div class="form-row">
+              <div class="form-group"><label>Código *</label><input name="codigo_producto" required maxlength="20" placeholder="P001"></div>
+              <div class="form-group"><label>Lote</label><input name="lote" maxlength="20" placeholder="L1"></div>
+            </div>
+            <div class="form-group"><label>Descripción *</label><input name="descripcion" required maxlength="200" placeholder="Caja de tornillos 1kg"></div>
+            <div class="form-row">
+              <div class="form-group"><label>Material</label><input name="material" maxlength="50" placeholder="Acero"></div>
+              <div class="form-group"><label>Unidad</label><input name="unidad_medida" maxlength="10" placeholder="KGM"></div>
+              <div class="form-group"><label>Peso Bruto</label><input type="number" name="peso_bruto" step="0.001" min="0" value="0.000" placeholder="peso por unidad"></div>
+            </div>
+            <div class="form-actions">
+              <button class="btn-primary" type="submit">Guardar</button>
+              <button type="button" onclick="hideProductoForm()" class="btn-secondary">Cancelar</button>
+            </div>
+          </form>
+        </div>
+      </section>
+
+    </main>
+    <script src="app.js"></script>
+  </body>
+</html>
