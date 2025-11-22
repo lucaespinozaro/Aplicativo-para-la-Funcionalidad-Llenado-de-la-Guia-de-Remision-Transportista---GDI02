@@ -1,13 +1,13 @@
 
 # **Aplicativo – Llenado de la Guía de Remisión Transportista (GDI02)**
 
-## 📌 Descripción
+## Descripción
 
 Este aplicativo web permite registrar empresas, conductores, vehículos y productos, además de crear Guías de Remisión Remitente y convertirlas en una Guía Transportista. Incluye validaciones, cálculos automáticos de pesos y conexión con una base de datos MariaDB mediante API REST y stored procedures.
 
 ---
 
-## 📂 Estructura del Proyecto
+## Estructura del Proyecto
 
 ```
 .
@@ -46,7 +46,7 @@ Este aplicativo web permite registrar empresas, conductores, vehículos y produc
     └── styles.css
 ```
 
-### 📁 Explicación de carpetas
+### Explicación de carpetas
 
 #### **/api/**
 
@@ -56,7 +56,7 @@ Contiene todo el backend:
 * **services/** → Lógica del negocio. Validaciones y procesos.
 * **dao/** → Acceso a la base de datos. Ejecutan SQL y stored procedures.
 * **db.js** → Configuración de conexión a MariaDB.
-* **server.js** → Punto de entrada del backend (Express).
+* **server.js** → Punto de entrada del backend (HTTP).
 
 #### **/db/**
 
@@ -77,26 +77,25 @@ Frontend simple:
 
 ---
 
-## ✔️ Requerimientos
+## Requerimientos
 
 ### **Software necesario**
 
 * Node.js 18+
-* MariaDB 10.5 o superior
+* MariaDB 10.5 o superior (También soporta MySQL)
 * Navegador moderno (Chrome/Firefox)
 
 ### **Dependencias del proyecto**
 
 Se instalan con `npm install`:
 
-* express
 * mysql2
 * cors
 * dotenv
 
 ---
 
-## 🛠️ Proceso de Instalación
+## Proceso de Instalación
 
 ### **1. Clonar el repositorio**
 
